@@ -52,12 +52,15 @@ Match each Ingress path to a line in the [URL map](../concepts/architecture.md#u
 
 ```bash
 tre status
-kubectl -n argocd get application root -o yaml | grep -A3 "source:"
+kubectl -n argocd get application root -o jsonpath='{.spec.source.repoURL}'
 ```
 
 `repoURL` should be **your** fork (or the upstream repository if you cloned). Open Argo CD in the
 browser (`/argocd/`, password from `tre info`) and click into **project-alpha**. You'll see the
 Namespace, ResourceQuota, LimitRange, PVC, RoleBinding and CiliumNetworkPolicy it created.
+
+*Note: `kyverno-policies` may show `OutOfSync` while `Healthy`. The policies are active; it is only
+Argo CD reacting to server-side defaults.*
 
 ## 6. Ask the API what things are
 

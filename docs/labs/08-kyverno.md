@@ -77,7 +77,7 @@ It is **allowed**: `disallow-latest-tag` is in `Audit` mode. The result goes int
 **PolicyReport**:
 
 ```bash
-sleep 15
+sleep 30
 kubectl -n project-alpha get policyreports -o wide
 kubectl -n project-alpha get policyreports -o yaml | grep -B2 -A10 "policy: disallow-latest-tag" | grep -E "result|message|name:" | head
 ```

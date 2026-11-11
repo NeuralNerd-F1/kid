@@ -5,6 +5,9 @@ and practise **triage**: deciding what to fix, what to accept and why.
 
 ## 1. Scan the projects
 
+Make sure a workspace is running (`kubectl -n project-alpha get pod -l component=singleuser-server`):
+without one most findings are missing and the score looks better than it is.
+
 ```bash
 kubescape list frameworks
 kubescape scan framework nsa --include-namespaces project-alpha,project-beta
@@ -28,10 +31,10 @@ namespaces need their own tight access control and review.
 Pick a failed control from step 1 and look at the detail, for example:
 
 ```bash
-kubescape scan framework nsa --include-namespaces project-alpha -v 2>&1 | less -R
+kubescape scan framework nsa --include-namespaces project-alpha -E 2>&1 | less -R
 ```
 
-For each failed resource Kubescape explains what failed and how to fix it.
+Add `-E` to see the exact field that failed; follow the control's documentation link for the fix.
 
 ## 4. Scan Git before it reaches the cluster
 
