@@ -129,10 +129,10 @@ docs/, zensical.toml  training documentation (Zensical)
 ## .pi
 
 `.pi/` configures the [Pi](https://pi.dev) coding agent (installed into the dev container via
-`.devcontainer/devcontainer.Dockerfile`): `.pi/skills/` holds the `kid-*` skills that mirror the
-`.agents/skills/` procedures plus two extra ones (`kid-platform-review` and `kid-lab-qa`),
-`.pi/prompts/` exposes slash commands (`/check`, `/grade`, `/explain`, `/review`), and
-`.pi/settings.json` enables the extra repo-navigation tools.
+`.devcontainer/devcontainer.Dockerfile`). `.pi/skills/` holds Pi-specific trainer skills
+(`kid-platform-review` and `kid-lab-qa`); the shared `kid-*` skills in `.agents/skills/` are reused
+as-is (Pi discovers that directory too). `.pi/prompts/` exposes slash commands (`/check`, `/grade`,
+`/explain`, `/review`), and `.pi/settings.json` enables the extra repo-navigation tools.
 
 ## Working with a coding agent
 
