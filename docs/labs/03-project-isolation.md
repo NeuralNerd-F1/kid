@@ -83,7 +83,7 @@ kubectl -n project-alpha get cnp default-deny -o yaml
 Now look at what Cilium actually enforces for the pod:
 
 ```bash
-kubectl -n kube-system exec ds/cilium -c cilium-agent -- cilium-dbg endpoint list | grep -E "ENDPOINT|project-"
+kubectl -n kube-system exec ds/cilium -c cilium-agent -- cilium-dbg endpoint list | grep -E "^[0-9]+ +Enabled +Enabled"
 ```
 
 `POLICY (ingress/egress) ENFORCEMENT` reads `Enabled / Enabled` for workspace endpoints.

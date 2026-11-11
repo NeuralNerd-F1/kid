@@ -8,3 +8,7 @@ __pycache__/
 .pytest_cache/
 kubescape-report.html
 gitops/**/charts/
+
+# Lab QA run logs (local only, may contain cluster detail)
+logs/
+.playwright-mcp/

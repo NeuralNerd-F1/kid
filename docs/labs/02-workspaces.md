@@ -14,7 +14,7 @@ The spawn page offers only **Project Alpha**, with a single **Small** size. Clic
 While it starts, watch from the terminal:
 
 ```bash
-kubectl -n project-alpha get pods,pvc -w
+watch -n2 kubectl -n project-alpha get pods,pvc
 ```
 
 `Ctrl+C` once the pod is `Running`.

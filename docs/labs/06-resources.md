@@ -59,16 +59,16 @@ for i in range(40):
     print(f"{(i + 1) * 100} MiB allocated", flush=True)
 ```
 
-Somewhere below 1000 MiB the kernel dies (**"The kernel appears to have died. It will restart
-automatically."**). The Linux OOM killer, enforcing the container's memory limit, killed the biggest
-process in the container: the Python kernel. The Jupyter server survived, so the pod keeps running:
+Somewhere below 1000 MiB the container hits its memory limit. Here `memory.oom.group=1`, so the
+cgroup OOM killer kills **every** process in the container: JupyterLab shows **"Server unavailable
+or unreachable"** and the pod restarts.
 
 ```bash
-kubectl -n project-alpha get pod jupyter-researcher1   # RESTARTS is still 0
+kubectl -n project-alpha describe pod jupyter-researcher1   # RESTARTS 1, Reason: OOMKilled
 ```
 
-If the server process itself had been killed, the container would restart and `RESTARTS` would go
-up, with `Last State: Terminated, Reason: OOMKilled` in `kubectl describe`.
+If your environment uses `memory.oom.group=0`, only the Python kernel dies (**"The kernel appears to
+have died. It will restart automatically."**), the Jupyter server survives and `RESTARTS` stays 0.
 
 ## 4. The LimitRange ceiling
 
