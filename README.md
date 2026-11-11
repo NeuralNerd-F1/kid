@@ -126,6 +126,14 @@ docs/, zensical.toml  training documentation (Zensical)
 5. Storage · 6. CPU and memory · 7. A new project via GitOps · 8. Kyverno guardrails ·
 9. Kubescape posture · 10. Challenges. See the [labs](https://karectl.github.io/kid/labs/).
 
+## .pi
+
+`.pi/` configures the [Pi](https://pi.dev) coding agent (installed into the dev container via
+`.devcontainer/devcontainer.Dockerfile`): `.pi/skills/` holds the `kid-*` skills that mirror the
+`.agents/skills/` procedures plus two extra ones (`kid-platform-review` and `kid-lab-qa`),
+`.pi/prompts/` exposes slash commands (`/check`, `/grade`, `/explain`, `/review`), and
+`.pi/settings.json` enables the extra repo-navigation tools.
+
 ## Working with a coding agent
 
 `AGENTS.md` (and `CLAUDE.md` for Claude Code) gives coding agents the context of this environment, and

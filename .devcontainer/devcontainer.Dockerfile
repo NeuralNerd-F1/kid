@@ -9,6 +9,8 @@ ARG CILIUM_CLI_VERSION=v0.16.22
 ARG HUBBLE_VERSION=v1.16.5
 ARG ARGOCD_CLI_VERSION=v3.0.0
 ARG KUBESCAPE_VERSION=v4.0.14
+# Node.js is required by the Pi coding-agent installer (pi.dev). Pin to an LTS.
+ARG NODE_VERSION=v22.19.0
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
@@ -77,7 +79,34 @@ RUN install -m 0755 -d /etc/apt/keyrings \
  && apt-get install -y --no-install-recommends docker-ce-cli \
  && rm -rf /var/lib/apt/lists/*
 
+# Node.js (required by the Pi coding-agent installer below). Installed from the
+# official binary tarball into /usr/local and checksum-verified, matching the
+# repo's CLI install style. TARGETARCH is x64 (amd64) or arm64.
+RUN case "${TARGETARCH}" in \
+      amd64) NODE_ARCH=x64 ;; \
+      arm64) NODE_ARCH=arm64 ;; \
+      *) echo "unsupported arch ${TARGETARCH}" >&2; exit 1 ;; \
+    esac \
+ && cd /tmp \
+ && curl -sfLO "https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz" \
+ && curl -sfLO "https://nodejs.org/dist/${NODE_VERSION}/SHASUMS256.txt" \
+ && grep "  node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz$" SHASUMS256.txt | sha256sum -c - \
+ && tar -xJf "node-${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz" --strip-components=1 -C /usr/local \
+ && rm -rf /tmp/* \
+ && node --version && npm --version
+
+# Pi coding agent (the AI assistant available inside this dev container).
+# Installed as the default `vscode` user so its managed install and config
+# live under /home/vscode/.pi (writable by that user). The project's `.pi/`
+# skills and prompts are discovered from the workspace. Adds `pi` to PATH.
+RUN echo 'export PATH="$HOME/.pi/agent/bin:${PATH}"' >> /etc/bash.bashrc
+
+# Node.js is installed above as root; run the pi installer as the dev user.
+USER vscode
+RUN curl -fsSL https://pi.dev/install.sh | sh
+
 # Shell completion for the CLIs used in the labs, plus the conventional `k` alias.
+USER root
 RUN kubectl completion bash > /etc/bash_completion.d/kubectl \
  && helm completion bash > /etc/bash_completion.d/helm \
  && cilium completion bash > /etc/bash_completion.d/cilium \
