@@ -74,7 +74,8 @@ Nobody can use gamma yet: no one is in the `gamma` group.
 3. **Users → researcher1 → Groups → Join Group** → tick `gamma` → **Join**.
 
 As researcher1 in JupyterHub: **log out** (`/jupyter/hub/logout`) and log back in. The spawn page
-now offers **Project Alpha** and **Project Gamma**. Start gamma:
+now offers **Project Alpha** and **Project Gamma**. If a workspace is already running, click **Stop
+My Server** on the hub home page first — JupyterHub allows one server per user. Start gamma:
 
 ```bash
 tre workspaces
@@ -118,7 +119,13 @@ Clean up:
 kubectl delete namespace rogue
 ```
 
+Also delete the `rogue` group in Keycloak (**Groups → rogue → Delete**), so researcher4 is back to
+no project.
+
 ## Part D: retire project gamma
+
+Stop researcher1's workspace first (**Stop My Server**): deleting a namespace under a running
+workspace leaves the hub's state stale.
 
 === "With a fork"
 
