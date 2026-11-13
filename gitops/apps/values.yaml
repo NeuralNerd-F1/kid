@@ -40,4 +40,14 @@ projects:
       pods: 4
       storage: 5Gi
     sharedStorage: 2Gi
-    
+  - name: gamma
+    displayName: Project Gamma
+    description: Genomics pilot (synthetic). Small or medium workspaces.
+    image: quay.io/jupyter/minimal-notebook:2026-08-10
+    sizes: [small, medium]
+    quota:
+      cpu: "2"
+      memory: 3Gi
+      pods: 4
+      storage: 5Gi
+    sharedStorage: 1Gi
